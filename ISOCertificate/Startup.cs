@@ -36,7 +36,17 @@ namespace ISOCertificate
                     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             services.AddDbContext<CertificateDbContext>(options =>
-              options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            //  options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            options.UseSqlServer(Configuration.GetSection("ConnectionString").Value,
+                        sqlOptions =>
+                        {
+                            sqlOptions.MigrationsAssembly("ISOCertificate");
+                            sqlOptions.EnableRetryOnFailure(10, TimeSpan.FromSeconds(3), new List<int>());
+                        }));
+  
+
+            
             services.AddSession();
             services.AddIdentity<ApplicationUser, IdentityRole>(option =>
             {

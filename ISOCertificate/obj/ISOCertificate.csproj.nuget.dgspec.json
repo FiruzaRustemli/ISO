@@ -1,25 +1,21 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\User\\Desktop\\ISO-master\\ISOCertificate\\ISOCertificate.csproj": {}
+    "C:\\Users\\Lenovo\\Desktop\\Repositories\\ISO\\ISO\\ISOCertificate\\ISOCertificate.csproj": {}
   },
   "projects": {
-    "C:\\Users\\User\\Desktop\\ISO-master\\ISOCertificate\\ISOCertificate.csproj": {
+    "C:\\Users\\Lenovo\\Desktop\\Repositories\\ISO\\ISO\\ISOCertificate\\ISOCertificate.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\User\\Desktop\\ISO-master\\ISOCertificate\\ISOCertificate.csproj",
+        "projectUniqueName": "C:\\Users\\Lenovo\\Desktop\\Repositories\\ISO\\ISO\\ISOCertificate\\ISOCertificate.csproj",
         "projectName": "ISOCertificate",
-        "projectPath": "C:\\Users\\User\\Desktop\\ISO-master\\ISOCertificate\\ISOCertificate.csproj",
-        "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\User\\Desktop\\ISO-master\\ISOCertificate\\obj\\",
+        "projectPath": "C:\\Users\\Lenovo\\Desktop\\Repositories\\ISO\\ISO\\ISOCertificate\\ISOCertificate.csproj",
+        "packagesPath": "C:\\Users\\Lenovo\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Lenovo\\Desktop\\Repositories\\ISO\\ISO\\ISOCertificate\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Microsoft\\Xamarin\\NuGet\\"
-        ],
         "configFilePaths": [
-          "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\Lenovo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
@@ -89,6 +85,10 @@
             "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
               "target": "Package",
               "version": "[3.1.4, )"
+            },
+            "Polly": {
+              "target": "Package",
+              "version": "[7.2.1, )"
             }
           },
           "imports": [
@@ -109,7 +109,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.402\\RuntimeIdentifierGraph.json"
         }
       }
     }
