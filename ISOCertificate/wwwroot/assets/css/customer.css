@@ -1,0 +1,22 @@
+.bg-shadow a{
+    display: block;
+    width: 100%;
+    padding: 2rem 2rem;
+    height: 100px;
+    border-radius: 15px;
+    margin-bottom: 2rem;
+}
+
+.btn-line-save, .save-butt-img, .btn-material-save {
+    width: 24%;
+    margin: auto;
+}
+
+
+@media only screen and (max-width: 768px) {
+    .btn-line-save, .save-butt-img, .btn-material-save {
+        width: 100%;
+        margin: auto;
+    }
+
+}

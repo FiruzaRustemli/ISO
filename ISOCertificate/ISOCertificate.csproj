@@ -1,0 +1,75 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Migrations\20200810055804_InitialDatabase.cs" />
+    <Compile Remove="Migrations\20200810055804_InitialDatabase.Designer.cs" />
+    <Compile Remove="Migrations\20200810110544_edit.cs" />
+    <Compile Remove="Migrations\20200810110544_edit.Designer.cs" />
+    <Compile Remove="Migrations\20200817063021_AddMenuAndModuleTable.cs" />
+    <Compile Remove="Migrations\20200817063021_AddMenuAndModuleTable.Designer.cs" />
+    <Compile Remove="Migrations\20200823130132_createAllTables.cs" />
+    <Compile Remove="Migrations\20200823130132_createAllTables.Designer.cs" />
+    <Compile Remove="Migrations\20200823140732_createAll.cs" />
+    <Compile Remove="Migrations\20200823140732_createAll.Designer.cs" />
+    <Compile Remove="Migrations\20200823142016_createAll.cs" />
+    <Compile Remove="Migrations\20200823142016_createAll.Designer.cs" />
+    <Compile Remove="Migrations\20200823142546_createAll.cs" />
+    <Compile Remove="Migrations\20200823142546_createAll.Designer.cs" />
+    <Compile Remove="Migrations\20200823145959_initial.cs" />
+    <Compile Remove="Migrations\20200823145959_initial.Designer.cs" />
+    <Compile Remove="Migrations\20200823152329_initial.cs" />
+    <Compile Remove="Migrations\20200823152329_initial.Designer.cs" />
+    <Compile Remove="Migrations\20200823170948_initial.cs" />
+    <Compile Remove="Migrations\20200823170948_initial.Designer.cs" />
+    <Compile Remove="Migrations\20200823200449_Initial.cs" />
+    <Compile Remove="Migrations\20200823200449_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20200823212149_initial.cs" />
+    <Compile Remove="Migrations\20200823212149_initial.Designer.cs" />
+    <Compile Remove="Migrations\20200823215516_initial.cs" />
+    <Compile Remove="Migrations\20200823215516_initial.Designer.cs" />
+    <Compile Remove="Migrations\20200823220010_initial.cs" />
+    <Compile Remove="Migrations\20200823220010_initial.Designer.cs" />
+    <Compile Remove="Migrations\20200823220225_initial.cs" />
+    <Compile Remove="Migrations\20200823220225_initial.Designer.cs" />
+    <Compile Remove="Migrations\20200823220457_initial.cs" />
+    <Compile Remove="Migrations\20200823220457_initial.Designer.cs" />
+    <Compile Remove="Migrations\20200823220921_initial.cs" />
+    <Compile Remove="Migrations\20200823220921_initial.Designer.cs" />
+    <Compile Remove="Migrations\20200912204345_investigateEventTime.cs" />
+    <Compile Remove="Migrations\20200912204345_investigateEventTime.Designer.cs" />
+    <Compile Remove="Migrations\20200912210643_investtimeadd.cs" />
+    <Compile Remove="Migrations\20200912210643_investtimeadd.Designer.cs" />
+    <Compile Remove="Migrations\20200912215112_timeSpan.cs" />
+    <Compile Remove="Migrations\20200912215112_timeSpan.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.0.0" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.6" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.0-preview1.19508.20" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.7">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="3.1.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.7">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.0-preview1.19506.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\images\investigate\" />
+    <Folder Include="wwwroot\images\incident\" />
+  </ItemGroup>
+
+</Project>

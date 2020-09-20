@@ -1,0 +1,1175 @@
+﻿
+@{
+    @model InvestigateCreateViewModel
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Index"; }
+
+<!-- start page title -->
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-flex align-items-center justify-content-between">
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Tables</a></li>
+                    <li class="breadcrumb-item active">Incident Reports</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row mb-5">
+                    <div class="col-md-10">
+                        <h4>Investigate/Incident</h4>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="dropdown">
+                            <button style="width:100%; background:#b81322;border:1px solid #b81322" class="btn btn-secondary dropdown-toggle"
+                                    type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-newspaper"></i>
+                                Operation <i class="mdi mdi-chevron-down"></i>
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                @if (User.IsInRole("User"))
+                                {
+                                    <a class="dropdown-item itemAdd" href="#" data-toggle="modal"
+                                       data-target=".bs-example-modal-xl">Create New</a>
+                                    <div class="dropdown-divider"></div>
+                                    @foreach (var m in ViewBag.InvestList)
+                                    {
+                                        @if (m.ConfirmStatus == 0)
+                                        {
+                                            <a href="javascript:;" class="dropdown-item itemClick">Edit Data</a>
+                                        }
+                                    }
+
+                                    <div class="dropdown-divider"></div>
+
+                                    <a href="javascript:;" class="dropdown-item itemDel">Delete Data</a>
+                                    <div class="dropdown-divider"></div>
+
+                                }
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <a class="dropdown-item itemAdminAdd" href="#" data-toggle="modal"
+                                       data-target=".adminModalLabel">Create new</a>
+                                    <div class="dropdown-divider"></div>
+
+                                    @foreach (var m in ViewBag.IncidentList)
+                                    {
+                                        @if (m.ConfirmStatus == 0)
+                                        {
+                                            <a href="javascript:;" class="dropdown-item itemAdminClick">Edit Data</a>
+                                        }
+                                    }
+
+                                    <div class="dropdown-divider"></div>
+
+                                    <a href="javascript:;" class="dropdown-item itemClick">Edit User's Data</a>
+                                    <div class="dropdown-divider"></div>
+
+                                    <a href="javascript:;" class="dropdown-item itemAdminDel">Delete Data</a>
+                                    <div class="dropdown-divider"></div>
+
+                                    <a href="javascript:;" class="dropdown-item itemPrint">
+                                        Incident reports index
+                                    </a>
+                                }
+                                @if (User.IsInRole("SuperAdmin"))
+                                {
+                                    <a href="javascript:;" class="dropdown-item itemClick">Edit User's Data</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a href="javascript:;" class="dropdown-item itemAdminClick">Edit Data</a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @if (User.IsInRole("Admin") || User.IsInRole("SuperAdmin"))
+                {
+                    <table id="datatable-buttons"
+                           class="table  display table-striped table-bordered dt-responsive nowrap clicks-table"
+                           style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                        <thead>
+                            <tr>
+                                <th style="display:none"></th>
+                                <th> Cause of the occurrence </th>
+                                <th>Outcome for people</th>
+                                <th>Outcome for property </th>
+                                <th>Outcome for environment </th>
+                                <th>Outcome for business </th>
+                                <th>Possible outcome for people </th>
+                                <th>Possible outcome for property</th>
+                                <th>Possible outcome for environment</th>
+                                <th>Possible outcome for business</th>
+                                <th> Lessons Learned </th>
+                                <th> Brief summary of investigation</th>
+                                <th>Explain the reasons root cause</th>
+                                <th> Identify the root cause</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var m in ViewBag.IncidentList)
+                            {
+                                <tr @{if (m.ConfirmStatus == 0) { <text> style="background-color: #e5a126; color:#fff " </text>  } else { <text> style="background-color: #99d699; color:#fff" </text>  } } data-id="@m.Id">
+                                    <td></td>
+                                    <td>@m.OccurenceCause.Name</td>
+                                    <td>@m.OutcomePeople.Name</td>
+                                    <td>@m.OutcomeProperty.Name</td>
+                                    <td>@m.OutcomeEnviroment.Name</td>
+                                    <td>@m.OutcomeBuisness.Name</td>
+                                    <td>@m.PossibleBuisness.Name</td>
+                                    <td>@m.PossibleProperty.Name</td>
+                                    <td>@m.PossibleEnviroment.Name</td>
+                                    <td>@m.PossiblePeople.Name</td>
+                                    <td>@m.LessonLearned.Name</td>
+                                    <td>@m.BriefDecription</td>
+                                    <td>@m.ReasonDescription</td>
+                                    <td>@m.IdentifyDescription</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                <hr style="border: 1px solid #d60707;" />
+
+                @if (User.IsInRole("User") || User.IsInRole("Admin") || User.IsInRole("SuperAdmin"))
+                {
+                    <table id="datatable-buttons"
+                           class="table display table-striped table-bordered dt-responsive nowrap clicked-table"
+                           style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                        <thead>
+                            <tr>
+                                <th style="display:none"></th>
+                                <th>
+                                    Name of reporter
+                                </th>
+                                <th>Position of reporter</th>
+                                <th>
+                                    Date of occurrence
+                                </th>
+                                <th>
+                                    Area & address where incident occurred:
+                                </th>
+                                <th>
+                                    Activity taking place at time of occurrence
+                                </th>
+                                <th>Occurrence Reason</th>
+                                <th>Occurrence Type</th>
+                                <th>Weather conditions </th>
+                                <th>Ground type /cover</th>
+                                <th>
+                                    Ground condition
+                                </th>
+                                <th>
+                                    Illumination - Lighting
+                                </th>
+                                <th>
+                                    Type of contact
+                                </th>
+                                <th>
+                                    Type of injury
+                                </th>
+                                <th>Apparent type of illness </th>
+                                <th>Bodily location</th>
+                                <th>
+                                    Actions of injured person after the incident
+                                </th>
+                                <th>Release Type</th>
+                                <th>Released To </th>
+                                <th>
+                                    Description of the incident
+                                </th>
+                                <th>
+                                    Immediate action taken:
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="myColor">
+                            @foreach (var m in ViewBag.InvestList)
+                            {
+                                <tr @{if (m.ConfirmStatus == 0) { <text> style="background-color: #e5a126; color:#fff " </text>  } else { <text> style="background-color: #99d699; color:#fff" </text>  } } data-id="@m.Id">
+                                    <td></td>
+                                    <td>@m.Name</td>
+                                    <td>@m.Position</td>
+                                    <td>@m.DateTime.ToString("yyyy-MM-dd")</td>
+                                    <td>@m.Area</td>
+                                    <td>@m.Activity</td>
+                                    <td>@m.OccurenceReason.Name</td>
+                                    <td>@m.OccurenceType.Name</td>
+                                    <td>@m.WheatherType.Name</td>
+                                    <td>@m.GroundType.Name</td>
+                                    <td>@m.GroundConditionType.Name</td>
+                                    <td>@m.IlluminationType.Name</td>
+                                    <td>@m.ContactType.Name</td>
+                                    <td>@m.InjuryType.Name</td>
+                                    <td>@m.IlnessType.Name</td>
+                                    <td>@m.BodilyLocationType.Name</td>
+                                    <td>@m.InjuredActionType.Name</td>
+                                    <td>@m.ReleaseType.Name</td>
+                                    <td>@m.ReleasedToType.Name</td>
+                                    <td>@m.DescriptionIncident</td>
+                                    <td>@m.DescriptionImmediate</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+    </div> <!-- end col -->
+</div> <!-- end row  || -->
+@if (User.IsInRole("User") || User.IsInRole("Admin") || User.IsInRole("SuperAdmin"))
+{
+    <div class="modal fade bs-example-modal-xl ModalLoad" id="ModalHide" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel"
+         aria-hidden="true">
+        @*<div id="ajaxLoader-inner"></div>*@
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header" style="background: brown;">
+                    <p style="color: #fff; font-size: 10px;">Incident_No_123</p>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true" style="color:#fff">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <form method="post" id="investigate-form">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-xs-12" style="width:100%">
+                                        <nav>
+                                            <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                                                <a class="nav-item nav-link active" id="nav-home-tab" style="color: brown;" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">Incident</a>
+                                                <a class="nav-item nav-link" id="nav-profile-tab" style="color: brown;" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">Occurence</a>
+                                                <a class="nav-item nav-link" id="nav-contact-tab" style="color: brown;" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Material</a>
+                                                <a class="nav-item nav-link" id="nav-about-tab" style="color: brown;" data-toggle="tab" href="#nav-about" role="tab" aria-controls="nav-about" aria-selected="false">Image</a>
+                                            </div>
+                                        </nav>
+                                        <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
+                                            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                                                @*   Begin Investigate*@
+                                                <div class="row py-4" style="border-bottom: 2px solid black;">
+                                                    <div class="col-md-2 col-12">
+                                                        <div class="form-group">
+                                                            <label>No <span style="color:red;"> * </span></label>
+                                                            <input type="hidden" name="inv-id" id="inv-id" value="" />
+                                                            <input style="background-color: #e0dfdf;" type="text" id="inv-no" class="form-control" readonly="readonly">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2 col-12">
+                                                        <div class="form-group">
+                                                            <label>Name of reporter  <span style="color:red;"> * </span></label>
+                                                            <input placeholder="Adı" type="text" id="inv-name" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2 col-12">
+                                                        <div class="form-group">
+                                                            <label>Position of reporter <span style="color:red;"> * </span></label>
+                                                            <input placeholder="Vəzifəsi" type="text" id="inv-position" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2 col-12">
+                                                        <div class="form-group">
+                                                            <label>Date of occurrence  <span style="color:red;"> * </span></label>
+                                                            <input type="date" id="inv-date" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2 col-12">
+                                                        <div class="form-group">
+                                                            <label>Time of occurrence  <span style="color:red;"> * </span></label>
+                                                            <input type="text" id="inv-time" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2 col-12">
+                                                        <div class="form-group">
+                                                            <label>
+                                                                Area & address:
+                                                                <span style="color:red;"> * </span>
+                                                            </label>
+                                                            <input type="text" placeholder="Area" id="inv-area" class="form-control">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-2 col-12">
+                                                        <div class="form-group">
+                                                            <label>Activity taking place  <span style="color:red;"> * </span></label>
+                                                            <input type="text" placeholder="Activity" id="inv-activity" class="form-control">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-2 col-12">
+                                                        <div class="form-group">
+                                                            <label>Occurrence Reason  <span style="color:red;"> * </span></label>
+                                                            <select class="form-control" id="inv-occurenceReason" asp-items="@(new SelectList(ViewBag.OccurenceReason, "Id", "Name"))" style="width:100%; padding: 5px;">
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2 col-12">
+                                                        <div class="form-group">
+                                                            <label>Occurrence Type  <span style="color:red;"> * </span></label>
+                                                            <select class="form-control" id="inv-occurenceType" asp-items="@(new SelectList(ViewBag.OccurenceType, "Id", "Name"))" style="width:100%; padding: 5px;">
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2 col-12">
+                                                        <div class="form-group">
+                                                            <label>Wheather conditions  <span style="color:red;"> * </span> </label>
+                                                            <select class="form-control" id="inv-wheatherType" asp-items="@(new SelectList(ViewBag.WheatherType, "Id", "Name"))" style="width:100%; padding: 5px;">
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2 col-12">
+                                                        <div class="form-group">
+                                                            <label>Ground type   <span style="color:red;"> * </span></label>
+                                                            <select class="form-control" id="inv-ground" asp-items="@(new SelectList(ViewBag.GroundType, "Id", "Name"))" style="width:100%; padding: 5px;">
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2 col-12">
+                                                        <div class="form-group">
+                                                            <label>
+                                                                Ground condition
+                                                                <span style="color:red;"> * </span>
+                                                            </label>
+                                                            <select class="form-control" id="inv-groundCondition" asp-items="@(new SelectList(ViewBag.GroundConditionType, "Id", "Name"))" style="width:100%; padding: 5px;">
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2 col-12">
+                                                        <div class="form-group">
+                                                            <label>
+                                                                Illumination - Lighting
+                                                                <span style="color:red;"> * </span>
+                                                            </label>
+                                                            <select class="form-control" id="inv-illumination" asp-items="@(new SelectList(ViewBag.IlluminationType, "Id", "Name"))" style="width:100%; padding: 5px;">
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2 col-12">
+                                                        <div class="form-group">
+                                                            <label>
+                                                                Type of contact
+                                                                <span style="color:red;"> * </span>
+                                                            </label>
+                                                            <select class="form-control" id="inv-contact" asp-items="@(new SelectList(ViewBag.ContactType, "Id", "Name"))" style="width:100%; padding: 5px;">
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2 col-12">
+                                                        <div class="form-group">
+                                                            <label>
+                                                                Type of injury
+                                                                <span style="color:red;"> * </span>
+                                                            </label>
+                                                            <select class="form-control" id="inv-injury" asp-items="@(new SelectList(ViewBag.InjuryType, "Id", "Name"))" style="width:100%; padding: 5px;">
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2 col-12">
+                                                        <div class="form-group">
+                                                            <label>
+                                                                Apparent type illness
+                                                                <span style="color:red;"> * </span>
+                                                            </label>
+                                                            <select class="form-control" id="inv-ilness" asp-items="@(new SelectList(ViewBag.IlnessType, "Id", "Name"))" style="width:100%; padding: 5px;">
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2 col-12">
+                                                        <div class="form-group">
+                                                            <label>Bodily location   <span style="color:red;"> * </span></label>
+                                                            <select class="form-control" id="inv-bodily" asp-items="@(new SelectList(ViewBag.BodilyLocationType, "Id", "Name"))" style="width:100%; padding: 5px;">
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2 col-12">
+                                                        <div class="form-group">
+                                                            <label>Injured person  <span style="color:red;"> * </span></label>
+                                                            <select class="form-control" id="inv-injuredAction" asp-items="@(new SelectList(ViewBag.InjuredActionType, "Id", "Name"))" style="width:100%; padding: 5px;">
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2 col-12">
+                                                        <div class="form-group">
+                                                            <label>
+                                                                Release type
+                                                                <span style="color:red;"> * </span>
+                                                            </label>
+                                                            <select class="form-control" id="inv-release" asp-items="@(new SelectList(ViewBag.ReleaseType, "Id", "Name"))" style="width:100%; padding: 5px;">
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2 col-12">
+                                                        <div class="form-group">
+                                                            <label>Released to  <span style="color:red;"> * </span></label>
+                                                            <select class="form-control" id="inv-releaseToType" asp-items="@(new SelectList(ViewBag.ReleasedToType, "Id", "Name"))" style="width:100%; padding: 5px;">
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2 col-12">
+                                                        <div class="form-group">
+                                                            <label>Unsafe Fact  <span style="color:red;"> * </span></label>
+                                                            <select class="form-control" id="inv-safeFact" asp-items="@(new SelectList(ViewBag.UnSafeFactType, "Id", "Name"))" multiple style="width:100%; padding: 5px;">
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2 col-12">
+                                                        <div class="form-group">
+                                                            <label>UnSafe Condition  <span style="color:red;"> * </span></label>
+                                                            <select class="form-control" id="inv-safeCondition" asp-items="@(new SelectList(ViewBag.UnSafeConditionType, "Id", "Name"))" multiple style="width:100%; padding: 5px;">
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2 col-12">
+                                                        <div class="form-group">
+                                                            <label>Description of Incident  <span style="color:red;"> * </span></label>
+                                                            <textarea style="display: block; width: 100%;" rows="3" cols="50"
+                                                                      placeholder="(describe what happened including the sequence of events, injured persons, witnesses, all substances, equipment, and machinery being used which was related to the incident.)" id="descriptionIncident"></textarea>
+                                                            @*<input class="form-control" type="text" placeholder="Incident" id="descriptionIncident">*@
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-2 col-12">
+                                                        <div class="form-group">
+                                                            <label>Description Immedity  <span style="color:red;"> * </span></label>
+                                                            <textarea style="display: block; width: 100%;" rows="3" cols="50" placeholder="(describe what actions were taken to reduce available hazards to acceptable level, perform first aid to casualties etc.)" id="inv-descriptionImmediate"></textarea>
+                                                            @*<input class="form-control" type="text" placeholder="Immedity" id="inv-descriptionImmediate">*@
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-2 col-12">
+                                                        <div class="form-group">
+                                                            <label id="lbl_error_investigate" style="color:red;"></label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                @*End Investigate*@
+                                            </div>
+                                            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                                                @*Begin InvestLine*@
+                                                <div class="row mt-4">
+                                                    <div class="col-12">
+                                                        <h4 style="padding-bottom: 26px;">The occurrence happened while</h4>
+                                                    </div>
+                                                    <hr />
+                                                    <div class="col-md-3 col-12">
+                                                        <div class="form-group">
+                                                            <label>Name  <span style="color:red;"> * </span></label>
+                                                            <input class="form-control" type="hidden" id="line-id" value="0">
+                                                            <input class="form-control" type="text" placeholder="Name" id="line-name" />
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-3 col-12">
+                                                        <div class="form-group">
+                                                            <label>Position  <span style="color:red;"> * </span></label>
+                                                            <input class="form-control" type="text" placeholder="Position" id="line-position" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-12">
+                                                        <div class="form-group">
+                                                            <label>Organization  <span style="color:red;"> * </span></label>
+
+                                                            <input class="form-control" type="text" placeholder="Organization" id="line-organization">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-3 col-12">
+                                                        <div class="form-group">
+                                                            <label>Type  <span style="color:red;"> * </span></label>
+                                                            <select class="form-control" id="line-type" asp-items="@(new SelectList(ViewBag.LineTypeCategory, "Id", "Name"))" style="width:100%; padding: 10px;">
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-12 col-12 d-flex">
+                                                        <div class="btn btn-primary btn-line-save mt-4" style="background: brown;border: 1px solid brown;">Add</div>
+                                                    </div>
+                                                    <div class="col-md-4 col-12" style="margin:2px">
+                                                        <div class="form-group">
+                                                            <label id="lbl_error_investigate_line" style="color:red;"></label>
+                                                        </div>
+                                                    </div>
+                                                    <table class="table mt-5">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col">Name</th>
+                                                                <th scope="col">Position</th>
+                                                                <th scope="col">Organization</th>
+                                                                <th scope="col">Type</th>
+                                                                <th>Operations</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="line-body">
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                @*End InvestLine*@
+                                            </div>
+                                            <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+                                                @*Begin Material*@
+                                                <div class="row mt-4">
+                                                    <div class="col-12">
+                                                        <h3 style="padding-bottom: 26px;">Material Information</h3>
+                                                    </div>
+                                                    <div class="col-md-2 col-12">
+                                                        <div class="form-group">
+                                                            <input class="form-control" type="hidden" id="material-id" value="0">
+                                                            <label>Material Release  <span style="color:red;"> * </span></label>
+                                                            <select class="form-control" id="material-release" asp-items="@(new SelectList(ViewBag.MaterialRelease, "Id", "Name"))" style="width:100%; padding: 10px;">
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-2 col-12">
+                                                        <div class="form-group">
+                                                            <label>Material Category  <span style="color:red;"> * </span></label>
+                                                            <select class="form-control" id="material-category" asp-items="@(new SelectList(ViewBag.MaterialCategory, "Id", "Name"))" style="width:100%; padding: 10px;">
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-2 col-12">
+                                                        <div class="form-group">
+                                                            <label>Material Duration  <span style="color:red;"> * </span></label>
+                                                            <input class="form-control" type="number" onkeydown="return event.keyCode !== 69" placeholder="Duration kg/m" id="material-duration">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-2 col-12">
+                                                        <div class="form-group">
+                                                            <label>Material Pollution  <span style="color:red;"> * </span></label>
+                                                            <input class="form-control" type="number" onkeydown="return event.keyCode !== 69" placeholder="Pollution kg/m" id="material-pollution">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-2 col-12">
+                                                        <div class="form-group">
+                                                            <label>Quantity Recovered  <span style="color:red;"> * </span></label>
+                                                            <input class="form-control" type="number" onkeydown="return event.keyCode !== 69" placeholder="Recovered kg/m" id="quantity-recovered">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-2 col-12">
+                                                        <div class="form-group">
+                                                            <label>Quantity Released  <span style="color:red;"> * </span></label>
+                                                            <input class="form-control" type="number" onkeydown="return event.keyCode !== 69" placeholder="Released  kg/m" id="quantity-released">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-12 col-12 d-flex">
+                                                        <div class="btn btn-primary btn-material-save mt-4" style="background: brown;border: 1px solid brown;">Add</div>
+                                                    </div>
+                                                    <div class="col-md-4 col-12" style="margin:2px;">
+                                                        <label id="lbl_error_material_line" style="color:red;"></label>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="table-responsive-sm" style=" overflow-x: auto;">
+                                                            <table class="table mt-5">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th scope="col">Release</th>
+                                                                        <th scope="col">Category</th>
+                                                                        <th scope="col">Duration</th>
+                                                                        <th scope="col">Pollution</th>
+                                                                        <th scope="col">Quantity Recovered</th>
+                                                                        <th scope="col">Quantity Released</th>
+                                                                        <th>Operations</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody id="material-body">
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                @*End Material*@
+                                            </div>
+                                            <div class="tab-pane fade" id="nav-about" role="tabpanel" aria-labelledby="nav-about-tab">
+                                                @*Begin Image*@
+                                                <div class="row mt-4">
+                                                    <div class="col-md-12 col-12">
+                                                        <h3 style="padding-bottom: 26px;">
+                                                            Upload attachment
+                                                        </h3>
+                                                    </div>
+                                                    <div class="col-md-3 col-12">
+                                                        <div class="form-group">
+                                                            <label>Document Type  <span style="color:red;"> * </span></label>
+                                                            <input class="form-control" type="hidden" id="image-id" value="0">
+                                                            <select class="form-control" id="image-document" asp-items="@(new SelectList(ViewBag.DocumentType, "Id", "Name"))" style="width:100%; padding: 10px;">
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-12">
+                                                        <div class="form-group">
+                                                            <label>Document Name  <span style="color:red;"> * </span></label>
+                                                            <input class="form-control" type="text" placeholder="name" id="image-name" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-12">
+                                                        <div class="custom-file" style="margin-top: 26px;">
+                                                            <input type="file" class="custom-file-input" id="customFile">
+                                                            <label class="custom-file-label" for="customFile"></label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-12">
+                                                        <div class="btn btn-primary btn-image-save mt-4" style="width:100%; background: brown;border: 1px solid brown;">Add</div>
+                                                    </div>
+                                                    <div class="text-container d-flex align-items-center col-md-6 col-6">
+                                                        <input type="submit" style="background: #2a3042;border: 1px solid #2a3042;" value="Save" class="mr-3 btn btn-success save-butt-img">
+                                                        @if (!User.IsInRole("Admin"))
+                                                        {
+                                                            <div style="width: 1rem; height: 1rem" class="spinner-border d-none" role="status">
+                                                                <span class="sr-only">Loading...</span>
+                                                            </div>
+                                                        }
+
+                                                        @if (User.IsInRole("Admin"))
+                                                        {
+                                                            <a href="javascript:;" style="background: #2a3042;border: 1px solid #2a3042;color:#fff" class="CompleteSts btn btn-success save-butt-img">Complete</a>
+                                                            <div style="width: 1rem; height: 1rem" class="spinner-border d-none" role="status">
+                                                                <span class="sr-only">Loading...</span>
+                                                            </div>
+                                                        }
+
+
+                                                    </div>
+
+
+                                                    <div class="col-md-4 col-12" style="margin:2px">
+                                                        <div class="form-group">
+                                                            <label id="lbl_error_image_line" style="color:red;"></label>
+                                                        </div>
+                                                    </div>
+                                                    <table class="table mt-5">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col">DocumentType</th>
+                                                                <th scope="col">DocumentName</th>
+                                                                <th scope="col">Image</th>
+                                                                <th>Operations</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="image-body">
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                @*End Image*@
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->}
+
+@if (User.IsInRole("Admin") || User.IsInRole("SuperAdmin"))
+{
+    <!-- Modal -->
+    <div class="modal adminModalLabel fade " id="adminModal" tabindex="-1" role="dialog" aria-labelledby="adminModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header" style="background: brown;">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true" style="color:#fff">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <form method="post" id="incident-form">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-xs-12" style="width:100%">
+                                        <nav>
+                                            <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                                                <a class="nav-item nav-link active" id="nav-main-tab" style="color: brown;" data-toggle="tab" href="#nav-main" role="tab" aria-controls="nav-main" aria-selected="true">Incident</a>
+                                                <a class="nav-item nav-link" id="nav-nomi-tab" style="color: brown;" data-toggle="tab" href="#nav-nomi" role="tab" aria-controls="nav-nomi" aria-selected="false">Nominated</a>
+                                                <a class="nav-item nav-link" id="nav-event-tab" style="color: brown;" data-toggle="tab" href="#nav-event" role="tab" aria-controls="nav-event" aria-selected="false">Event</a>
+                                                <a class="nav-item nav-link" id="nav-prevent-tab" style="color: brown;" data-toggle="tab" href="#nav-prevent" role="tab" aria-controls="nav-prevent" aria-selected="false">Prevent</a>
+                                                <a class="nav-item nav-link" id="nav-evalution-tab" style="color: brown;" data-toggle="tab" href="#nav-evalution" role="tab" aria-controls="nav-evalution" aria-selected="false">Evalution</a>
+                                                <a class="nav-item nav-link" id="nav-img-tab" style="color: brown;" data-toggle="tab" href="#nav-img" role="tab" aria-controls="nav-img" aria-selected="false">Image</a>
+                                            </div>
+                                        </nav>
+                                        <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
+                                            <div class="tab-pane fade show active" id="nav-main" role="tabpanel" aria-labelledby="nav-main-tab">
+                                                @*   Begin 2nd Investigate*@
+                                                <div class="row py-4" style="border-bottom: 2px solid black;">
+                                                    <div class="col-md-3 col-12">
+                                                        <div class="form-group">
+                                                            <label>No <span style="color:red;"> * </span></label>
+                                                            <input type="hidden" name="Uinv-id" id="Uinv-id" value="" />
+                                                            <input style="background-color: #e0dfdf;" type="text" id="Uinv-no" class="form-control" readonly="readonly">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-12">
+                                                        <div class="form-group">
+                                                            <label>Cause of the occurrence <span style="color:red;"> * </span></label>
+                                                            <select class="form-control" id="inv-cause" asp-items="@(new SelectList(ViewBag.OccurenceCause, "Id", "Name"))" style="width:100%; padding: 5px;">
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-12">
+                                                        <div class="form-group">
+                                                            <label>
+                                                                Outcome for people
+                                                                <span style="color:red;"> * </span>
+                                                            </label>
+                                                            <select class="form-control" id="inv-people" asp-items="@(new SelectList(ViewBag.OutcomePeople, "Id", "Name"))" style="width:100%; padding: 5px;">
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-12">
+                                                        <div class="form-group">
+                                                            <label>
+                                                                Outcome for property
+                                                                <span style="color:red;"> * </span>
+                                                            </label>
+                                                            <select class="form-control" id="inv-property" asp-items="@(new SelectList(ViewBag.OutcomeProperty, "Id", "Name"))" style="width:100%; padding: 5px;">
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-12">
+                                                        <div class="form-group">
+                                                            <label>
+                                                                Outcome for environment
+                                                                <span style="color:red;"> * </span>
+                                                            </label>
+                                                            <select class="form-control" id="inv-enviroment" asp-items="@(new SelectList(ViewBag.OutcomeEnviroment, "Id", "Name"))" style="width:100%; padding: 5px;">
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-12">
+                                                        <div class="form-group">
+                                                            <label>
+                                                                Outcome for business
+                                                                <span style="color:red;"> * </span>
+                                                            </label>
+                                                            <select class="form-control" id="inv-buisness" asp-items="@(new SelectList(ViewBag.OutcomeBuisness, "Id", "Name"))" style="width:100%; padding: 5px;">
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-3 col-12">
+                                                        <div class="form-group">
+                                                            <label>
+                                                                Possible outcome for people
+                                                                <span style="color:red;"> * </span>
+                                                            </label>
+                                                            <select class="form-control" id="inv-possiblePeople" asp-items="@(new SelectList(ViewBag.PossiblePeople, "Id", "Name"))" style="width:100%; padding: 5px;">
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-3 col-12">
+                                                        <div class="form-group">
+                                                            <label>
+                                                                Possible outcome for property
+                                                                <span style="color:red;"> * </span>
+                                                            </label>
+                                                            <select class="form-control" id="inv-possibleProperty" asp-items="@(new SelectList(ViewBag.PossibleProperty, "Id", "Name"))" style="width:100%; padding: 5px;">
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-12">
+                                                        <div class="form-group">
+                                                            <label>
+                                                                Possible outcome for environment
+                                                                <span style="color:red;"> * </span>
+                                                            </label>
+                                                            <select class="form-control" id="inv-possibleEnviroment" asp-items="@(new SelectList(ViewBag.PossibleEnviroment, "Id", "Name"))" style="width:100%; padding: 5px;">
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-12">
+                                                        <div class="form-group">
+                                                            <label>
+                                                                Possible outcome for business
+                                                                <span style="color:red;"> * </span>
+                                                            </label>
+                                                            <select class="form-control" id="inv-possibleBuisness" asp-items="@(new SelectList(ViewBag.PossibleBuisness, "Id", "Name"))" style="width:100%; padding: 5px;">
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-12">
+                                                        <div class="form-group">
+                                                            <label>Lessons Learned  <span style="color:red;"> * </span></label>
+                                                            <select class="form-control" id="inv-lesson" asp-items="@(new SelectList(ViewBag.LessonLearned, "Id", "Name"))" style="width:100%; padding: 5px;">
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-12">
+                                                        <div class="form-group">
+                                                            <label>
+                                                                Brief summary of investigation:
+                                                                <span style="color:red;"> * </span>
+                                                            </label>
+                                                            <input class="form-control" type="text" placeholder="Brief summary" id="event-brief">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-12">
+                                                        <div class="form-group">
+                                                            <label>
+                                                                Explain the reasons root cause:
+                                                                <span style="color:red;"> * </span>
+                                                            </label>
+                                                            <input class="form-control" type="text" placeholder="Explain reason" id="event-explain">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-12">
+                                                        <div class="form-group">
+                                                            <label>
+                                                                Identify the root cause:
+                                                                <span style="color:red;"> * </span>
+                                                            </label>
+                                                            <input class="form-control" type="text" placeholder="Identify root cause" id="event-identity">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-12">
+                                                        <div class="form-group">
+                                                            <label id="lbl_error_investigate_team" style="color:red;"></label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                @*End 2nd Investigate*@
+                                            </div>
+                                            <div class="tab-pane fade" id="nav-nomi" role="tabpanel" aria-labelledby="nav-nomi-tab">
+                                                @*Begin NomitInvestLine*@
+                                                <div class="row mt-4">
+                                                    <div class="col-12">
+                                                        <h4 style="padding-bottom: 26px;">
+                                                            List of nominated investigation team
+                                                        </h4>
+                                                    </div>
+                                                    <hr />
+                                                    <div class="col-md-3 col-12">
+                                                        <div class="form-group">
+                                                            <label>
+                                                                List of nominated investigation team
+                                                                <span style="color:red;"> * </span>
+                                                            </label>
+                                                            <input class="form-control" type="hidden" id="team-id" value="0">
+                                                            <input class="form-control" type="text" placeholder="Name" id="team-name" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-12">
+                                                        <div class="form-group">
+                                                            <label>Position  <span style="color:red;"> * </span></label>
+                                                            <input class="form-control" type="text" placeholder="Position" id="team-position" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-12">
+                                                        <div class="form-group">
+                                                            <label>Organization  <span style="color:red;"> * </span></label>
+
+                                                            <input class="form-control" type="text" placeholder="Organization" id="team-organization">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-3 col-12">
+                                                        <div class="form-group">
+                                                            <label>Type  <span style="color:red;"> * </span></label>
+                                                            <select class="form-control" id="team-type" asp-items="@(new SelectList(ViewBag.NominateLineTypeCategory, "Id", "Name"))" style="width:100%; padding: 10px;">
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-12 col-12 d-flex">
+                                                        <div class="btn btn-primary btn-nom-save mt-4" style="background: brown;border: 1px solid brown;">Add</div>
+                                                    </div>
+                                                    <div class="col-md-4 col-12" style="margin:2px">
+                                                        <div class="form-group">
+                                                            <label id="lbl_error_investigate_nom_line" style="color:red;"></label>
+                                                        </div>
+                                                    </div>
+                                                    <table class="table mt-5">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col">Name</th>
+                                                                <th scope="col">Position</th>
+                                                                <th scope="col">Organization</th>
+                                                                <th scope="col">Nominated Type</th>
+                                                                <th>Operations</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="nominated-body">
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                @*End NomitInvestLine*@
+                                            </div>
+                                            <div class="tab-pane fade" id="nav-event" role="tabpanel" aria-labelledby="nav-event-tab">
+                                                @*Begin Event*@
+                                                <div class="row mt-4">
+                                                    <div class="col-12">
+                                                        <h3 style="padding-bottom: 26px;">
+                                                            Chronology of Events
+                                                        </h3>
+                                                    </div>
+                                                    <div class="col-md-3 col-12">
+                                                        <div class="form-group">
+                                                            <label>Date of events  <span style="color:red;"> * </span></label>
+                                                            <input class="form-control" type="hidden" id="event-id" value="0">
+                                                            <input type="date" id="event-date" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-12">
+                                                        <div class="form-group">
+                                                            <label>Time of events  <span style="color:red;"> * </span></label>
+                                                            <input type="text" id="event-time" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-12">
+                                                        <div class="form-group">
+                                                            <label>
+                                                                Event description
+                                                                <span style="color:red;"> * </span>
+                                                            </label>
+                                                            <input class="form-control" type="text" placeholder="Event description" id="event-descrption">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-12">
+                                                        <div class="form-group">
+                                                            <label>Additional comments  <span style="color:red;"> * </span></label>
+                                                            <input class="form-control" type="text" placeholder="Additional comments" id="event-comment">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-12 col-12 d-flex">
+                                                        <div class="btn btn-primary btn-event-save mt-4" style="background: brown;border: 1px solid brown;">Add</div>
+                                                    </div>
+                                                    <div class="col-md-4 col-12" style="margin:2px;">
+                                                        <label id="lbl_error_event_line" style="color:red;"></label>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="table-responsive-sm" style=" overflow-x: auto;">
+                                                            <table class="table mt-5">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th scope="col">No</th>
+                                                                        <th scope="col">Date</th>
+                                                                        <th scope="col">Time</th>
+                                                                        <th scope="col">Description</th>
+                                                                        <th scope="col">Commeents</th>
+                                                                        <th>Operations</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody id="event-body">
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                @*End Event*@
+                                            </div>
+                                            <div class="tab-pane fade" id="nav-prevent" role="tabpanel" aria-labelledby="nav-prevent-tab">
+                                                @*Begin Prevent*@
+                                                <div class="row mt-4">
+                                                    <div class="col-12">
+                                                        <h3 style="padding-bottom: 26px;">
+                                                            Corrective action(s) required to prevent recurrence
+                                                        </h3>
+                                                    </div>
+                                                    <div class="col-md-4 col-12">
+                                                        <div class="form-group">
+                                                            <label>
+                                                                Action
+                                                                <span style="color:red;"> * </span>
+                                                            </label>
+                                                            <input class="form-control" type="hidden" id="prevent-id" value="0">
+                                                            <input type="text" id="prevent-action" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 col-12">
+                                                        <div class="form-group">
+                                                            <label>
+                                                                Responsible person
+                                                                <span style="color:red;"> * </span>
+                                                            </label>
+                                                            <input type="text" id="prevent-person" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 col-12">
+                                                        <div class="form-group">
+                                                            <label>
+                                                                Target date
+                                                                <span style="color:red;"> * </span>
+                                                            </label>
+                                                            <input class="form-control" type="date" id="prevent-date">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12 col-12 d-flex">
+                                                        <div class="btn btn-primary btn-prevent-save mt-4" style="background: brown;border: 1px solid brown;">Add </div>
+                                                    </div>
+                                                    <div class="col-md-4 col-12" style="margin:2px;">
+                                                        <label id="lbl_error_prevent_line" style="color:red;"></label>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="table-responsive-sm" style=" overflow-x: auto;">
+                                                            <table class="table mt-5">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th scope="col">No</th>
+                                                                        <th scope="col">Action</th>
+                                                                        <th scope="col">Responsible Person</th>
+                                                                        <th scope="col">Date</th>
+                                                                        <th>Operations</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody id="prevent-body">
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                @*End Prevent*@
+                                            </div>
+                                            <div class="tab-pane fade" id="nav-evalution" role="tabpanel" aria-labelledby="nav-evalution-tab">
+                                                @*Begin evalution*@
+                                                <div class="row mt-4">
+                                                    <div class="col-12">
+                                                        <h3 style="padding-bottom: 26px;">
+                                                            Evaluation of the effectiveness of the corrective action(s):
+                                                        </h3>
+                                                    </div>
+                                                    <div class="col-md-6 col-12">
+                                                        <div class="form-group">
+                                                            <label>
+                                                                Notes on actions
+                                                                <span style="color:red;"> * </span>
+                                                            </label>
+                                                            <input class="form-control" type="hidden" id="evalition-id" value="0">
+                                                            <input type="text" id="evalition-note" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 col-12">
+                                                        <div class="form-group">
+                                                            <label>
+                                                                Target date
+                                                                <span style="color:red;"> * </span>
+                                                            </label>
+                                                            <input class="form-control" type="date" id="evalition-date">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12 col-12 d-flex">
+                                                        <div class="btn btn-primary btn-evalition-save mt-4" style="background: brown;border: 1px solid brown;">Add </div>
+                                                    </div>
+                                                    <div class="col-md-4 col-12" style="margin:2px;">
+                                                        <label id="lbl_error_evalition_line" style="color:red;"></label>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="table-responsive-sm" style=" overflow-x: auto;">
+                                                            <table class="table mt-5">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th scope="col">No</th>
+                                                                        <th scope="col">
+                                                                            Notes on actions
+                                                                        </th>
+                                                                        <th scope="col">Date</th>
+                                                                        <th>Operations</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody id="evalition-body">
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                @*End evalution*@
+                                            </div>
+                                            <div class="tab-pane fade" id="nav-img" role="tabpanel" aria-labelledby="nav-img-tab">
+                                                @*Begin Image*@
+                                                <div class="row mt-4">
+                                                    <div class="col-md-12 col-12">
+                                                        <h3 style="padding-bottom: 26px;">
+                                                            Upload attachment
+                                                        </h3>
+                                                    </div>
+                                                    <div class="col-md-3 col-12">
+                                                        <div class="form-group">
+                                                            <label>Document Type  <span style="color:red;"> * </span></label>
+                                                            <input class="form-control" type="hidden" id="statetment-id" value="0">
+                                                            <select class="form-control" id="statetment-document" asp-items="@(new SelectList(ViewBag.DocumentType, "Id", "Name"))" style="width:100%; padding: 10px;">
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-12">
+                                                        <div class="form-group">
+                                                            <label>Document Name  <span style="color:red;"> * </span></label>
+                                                            <input class="form-control" type="text" placeholder="name" id="statetment-name" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-12">
+                                                        <div class="custom-file" style="margin-top: 26px;">
+                                                            <input type="file" class="custom-file-input statetment-file-input" id="statetmentFile">
+                                                            <label class="custom-file-label" for="statetmentFile"></label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3 col-12">
+                                                        <div class="btn btn-primary btn-statetment-image-save mt-4" style="width:100%; background: brown;border: 1px solid brown;">Add</div>
+                                                    </div>
+                                                    <div class="">
+                                                        <input type="submit" style="background: #2a3042;border: 1px solid #2a3042; margin-right: 12px;" value="Save" class="mr-3 btn btn-success save-butt-img">
+                                                        @*<div style="width: 1rem; height: 1rem" class="spinner-border d-none" role="status">
+                                                            <span class="sr-only">Loading...</span>
+                                                        </div>*@
+                                                    </div>
+                                                    <div class="">
+                                                        @if (User.IsInRole("SuperAdmin"))
+                                                        {
+                                                            <div class="row">
+                                                                <div class="">
+                                                                    <a href="javascript:;" style="background: #2a3042;border: 1px solid #2a3042;color:#fff" class="CompleteStsAdmn btn btn-success save-butt-img">Complete</a>
+                                                                    @*<div style="width: 1rem; height: 1rem" class="spinner-border d-none" role="status">
+                                                                        <span class="sr-only">Loading...</span>
+                                                                    </div>*@
+                                                                </div>
+                                                                @*<div class="col-md-6">
+                                                                    <a href="javascript:;" style="background: #2a3042;border: 1px solid #2a3042;color:#fff;float: left;" class="DeclineSts mt-3 btn btn-success save-butt-img">Decline</a>
+                                                                    <textarea style="display: block;margin: 13px 10px;float: left;height: 42px;" rows="3" cols="50" placeholder="Note" id="inv-declineNote"></textarea>
+                                                                </div>*@
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                    <div class="col-md-4 col-12" style="margin:2px">
+                                                        <div class="form-group">
+                                                            <label id="lbl_error_statetment_image_line" style="color:red;"></label>
+                                                        </div>
+                                                    </div>
+                                                    <table class="table mt-5">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col">DocumentType</th>
+                                                                <th scope="col">DocumentName</th>
+                                                                <th scope="col">Image</th>
+                                                                <th>Operations</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="statetment-body">
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                @*End Image*@
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+}

@@ -1,0 +1,278 @@
+﻿@{
+    Layout = null;
+}
+@{
+    string Id = "";
+    string No = "";
+    string BriefDecription = "";
+    string IdentifyDescription = "";
+    string OccurenceCause = "";
+    string LessonLearned = "";
+    string OutcomeBuisness = "";
+    string OutcomeEnviroment = "";
+    string OutcomePeople = "";
+    string OutcomeProperty = "";
+    string PossibleBuisness = "";
+    string PossibleEnviroment = "";
+    string PossiblePeople = "";
+    string PossibleProperty = "";
+    string ReasonDescription = "";
+
+    foreach (var dr in ViewBag.BRheader)
+    {
+        Id = dr.Id.ToString();
+        No = dr.No.ToString();
+        BriefDecription = dr.BriefDecription.ToString();
+        IdentifyDescription = dr.IdentifyDescription.ToString();
+        LessonLearned = dr.LessonLearned.Name.ToString();
+        OutcomeBuisness = dr.OutcomeBuisness.Name.ToString();
+        OutcomeEnviroment = dr.OutcomeEnviroment.Name.ToString();
+        OutcomePeople = dr.OutcomePeople.Name.ToString();
+        OutcomeProperty = dr.OutcomeProperty.Name.ToString();
+        PossibleBuisness = dr.PossibleBuisness.Name.ToString();
+        PossibleEnviroment = dr.PossibleEnviroment.Name.ToString();
+        PossiblePeople = dr.PossiblePeople.Name.ToString();
+        PossibleProperty = dr.PossibleProperty.Name.ToString();
+        ReasonDescription = dr.ReasonDescription.ToString();
+        OccurenceCause = dr.OccurenceCause.Name.ToString();
+    }
+}
+
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Investgiate</title>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+        //nom
+        var url = "/Investigate/DeliverNominatedLineFill_edit";
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: {
+                id: @Id
+            },
+            success: function (result) {
+                var jsondata = $.parseJSON(result);
+                var row = "";
+                var table = $("#nominated > tbody");
+                table.html("");
+                var index = 0;
+                    //console.log(jsondata);
+                    $.each(jsondata, function (j, e) {
+                       index = parseInt(index + 1);
+                       row += '<tr><td>' + index + '</td><td>' + e.Name + '</td><td>' + e.Position + '</td>'
+                            + '<td>' + e.Organization + '</td><td>' + e.TeamType.Name + '</td></tr>';
+                    });
+                table.append(row);
+                window.print();
+            },
+            error: function (e) {
+                alert(e.responseText);
+            }
+        })
+
+        //event
+        var e_url = "/Investigate/DeliverEventLineFill_edit";
+        $.ajax({
+            type: "POST",
+            url: e_url,
+            data: {
+                id: @Id
+            },
+            success: function (result) {
+                var jsondata = $.parseJSON(result);
+                var row = "";
+                var table = $("#event > tbody");
+                table.html("");
+                var index = 0;
+                    //console.log(jsondata);
+                    $.each(jsondata, function (j, e) {
+                       index = parseInt(index + 1);
+                       row += '<tr><td>' + index + '</td><td>' + e.Date.substr(0, 10) + '</td><td>' + e.Time  + '</td>'
+                            + '<td>' + e.Description  + '</td><td>' + e.Comment + '</td></tr>';
+                    });
+                table.append(row);
+            },
+            error: function (e) {
+                alert(e.responseText);
+            }
+        })
+
+        //prevent
+          var p_url = "/Investigate/DeliverPreventLineFill_edit";
+        $.ajax({
+            type: "POST",
+            url: p_url,
+            data: {
+                id: @Id
+            },
+            success: function (result) {
+                var jsondata = $.parseJSON(result);
+                var row = "";
+                var table = $("#prevent > tbody");
+                table.html("");
+                var index = 0;
+                    //console.log(jsondata);
+                    $.each(jsondata, function (j, e) {
+                       index = parseInt(index + 1);
+                       row += '<tr><td>' + index + '</td><td>' + e.Action + '</td><td>' + e.Person  + '</td><td>'  + e.Date.substr(0, 10) + '</td></tr>';
+                    });
+                table.append(row);
+            },
+            error: function (e) {
+                alert(e.responseText);
+            }
+        })
+
+        //evalut
+          var ev_url = "/Investigate/DeliverEvalutionFill_edit";
+        $.ajax({
+            type: "POST",
+            url: ev_url,
+            data: {
+                id: @Id
+            },
+            success: function (result) {
+                var jsondata = $.parseJSON(result);
+                var row = "";
+                var table = $("#evalution > tbody");
+                table.html("");
+                var index = 0;
+                    //console.log(jsondata);
+                    $.each(jsondata, function (j, e) {
+                       index = parseInt(index + 1);
+                       row += '<tr><td>' + index + '</td><td>' + e.Notes  + '</td><td>'  + e.Date.substr(0, 10) + '</td></tr>';
+                    });
+                table.append(row);
+          
+            },
+            error: function (e) {
+                alert(e.responseText);
+            }
+        })
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <img src="~/assets/images/new-QCS-logo.png" alt="error" style="width: 104px;">
+                            </div>
+
+                            <div class="col-md-6 text-right">
+                                <p class="font-weight-bold mb-1">Investigate # @No</p>
+                                <p class="text-muted">Due to: @DateTime.Now </p>
+                            </div>
+                        </div>
+                        <hr class="">
+                        <div class="row pb-5 p-5">
+                            <div class="col-md-6">
+                                <p class="font-weight-bold mb-4">Report Information: </p>
+                                <p class="mb-1"><span class="text-muted">LessonLearned: </span> @LessonLearned</p>
+                                <p class="mb-1"><span class="text-muted">OutcomeBuisness: </span> @OutcomeBuisness</p>
+                                <p class="mb-1"><span class="text-muted">OutcomeEnviroment: </span> @OutcomeEnviroment</p>
+                                <p class="mb-1"><span class="text-muted">BriefDecription: </span> @OutcomePeople</p>
+                                <p class="mb-1"><span class="text-muted">IdentifyDescription: </span> @OutcomeProperty</p>
+                                <p class="mb-1"><span class="text-muted">PossibleBuisness: </span> @PossibleBuisness</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p class="font-weight-bold mb-4"></p>
+                                <p class="mb-1"><span class="text-muted">OccurenceCause: </span> @OccurenceCause</p>
+                                <p class="mb-1"><span class="text-muted">PossibleEnviroment: </span> @PossibleEnviroment</p>
+                                <p class="mb-1"><span class="text-muted">OutcomeBuisness: </span> @PossiblePeople</p>
+                                <p class="mb-1"><span class="text-muted">OutcomeEnviroment: </span> @PossibleProperty</p>
+                                <p class="mb-1"><span class="text-muted">BriefDecription: </span> @BriefDecription</p>
+                                <p class="mb-1"><span class="text-muted">IdentifyDescription: </span> @IdentifyDescription</p>
+                                <p class="mb-1"><span class="text-muted">ReasonDescription: </span> @ReasonDescription</p>
+                            </div>
+                        </div>
+                        <hr> <!--nom-->
+                        <div class="row p-5">
+                            <div class="col-md-12">
+                                <table class="table-bordered table" id="nominated">
+                                    <thead>
+                                        <tr>
+                                            <th class="border-0 text-uppercase small font-weight-bold">№</th>
+                                            <th class="border-0 text-uppercase small font-weight-bold">Name</th>
+                                            <th class="border-0 text-uppercase small font-weight-bold">Position</th>
+                                            <th class="border-0 text-uppercase small font-weight-bold">Organization</th>
+                                            <th class="border-0 text-uppercase small font-weight-bold">Type</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <hr> <!--event-->
+                        <div class="row p-5">
+                            <div class="col-md-12">
+                                <table class="table-bordered table" id="event">
+                                    <thead>
+                                        <tr>
+                                            <th class="border-0 text-uppercase small font-weight-bold">№</th>
+                                            <th class="border-0 text-uppercase small font-weight-bold">Date</th>
+                                            <th class="border-0 text-uppercase small font-weight-bold">Time of events</th>
+                                            <th class="border-0 text-uppercase small font-weight-bold">Description</th>
+                                            <th class="border-0 text-uppercase small font-weight-bold">Comment</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <hr> <!--prevent-->
+                        <div class="row p-5">
+                            <div class="col-md-12">
+                                <table class="table-bordered table" id="prevent">
+                                    <thead>
+                                        <tr>
+                                            <th class="border-0 text-uppercase small font-weight-bold">№</th>
+                                            <th class="border-0 text-uppercase small font-weight-bold">Action </th>
+                                            <th class="border-0 text-uppercase small font-weight-bold">Responsible person</th>
+                                            <th class="border-0 text-uppercase small font-weight-bold">Target date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <hr> <!--evalut-->
+                        <div class="row p-5">
+                            <div class="col-md-12">
+                                <table class="table-bordered table" id="evalution">
+                                    <thead>
+                                        <tr>
+                                            <th class="border-0 text-uppercase small font-weight-bold">№</th>
+                                            <th class="border-0 text-uppercase small font-weight-bold">Notes on actions </th>
+                                            <th class="border-0 text-uppercase small font-weight-bold">Target date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <hr>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

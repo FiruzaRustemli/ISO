@@ -1,0 +1,66 @@
+﻿@{
+    @model IEnumerable<GetModulesOutputModel>
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-flex align-items-center justify-content-between">
+            <h4 class="mb-0 font-size-18">Dashboard</h4>
+
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item active">Welcome ISO</li>
+                </ol>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="bd-example">
+    <div class="row">
+        @foreach (var m in Model)
+        {
+            <div class="col-sm-4">
+                <div class="card" style="height: 132px;" id="body-me">
+                    <div class="card-body" id="cardBody">
+                        <h5 class="card-title"> @m.Name </h5>
+                        <p class="card-text"></p>
+                        <a href="#" id="link" onclick="SetUrl('@m.Url', @m.Id)" style="background-color: @m.Color; border-color: @m.Color; color:#fff" class="btn btn-danger">Next</a>
+                        <input type="hidden" value="@m.Id" />
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+
+<script>
+    function SetUrl(val, moduleId) {
+        $.ajax({
+            url: "/Ajax/GetMenu?ModuleId=" + moduleId,
+            type: 'GET',
+            success: (response) => {
+                console.log(response);
+                var row = '<li class="menu-title">Menu</li>';
+                $.each(response, function (i, d) {
+                    row += "<li>"
+                    row += "<a href='" + d.url + "' class='waves-effect'>"
+                    row += "<i class='" + d.icon + "'></i><span>" + d.name + "</span>"
+                    row += "</a>"
+                    row += "</li>"
+                });
+                console.log(row);
+                $('#sidebar-menu ul').text("");
+                $('#sidebar-menu ul').append(row);
+                localStorage.setItem("row", row);
+
+                window.location = val;
+            },
+            error: (error) => {
+                console.log(error);
+            }
+        });
+    };
+</script>

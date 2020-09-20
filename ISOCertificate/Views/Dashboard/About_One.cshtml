@@ -1,0 +1,38 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    #modulesBack {
+        background: brown;
+        border: 1px solid brown;
+    }
+
+        #modulesBack:hover {
+            background: #2a3042;
+            border: 1px solid #2a3042;
+            transition: background-color 0.5s ease;
+        }
+
+    #about {
+        border: 1px solid #2a3042;
+        border-radius: 13px;
+    }
+</style>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="container-fluid">
+            <div class="bd-example">
+                <div class="card text-center">
+                    <div class="card-body" id="about">
+                        <h5 class="card-title">  Incident reporting Process Model</h5>
+                        <hr />
+                        <p class="card-text">    Incident is an occurrence, condition, or situation arising in the course of work that resulted in injury(s), illness(s), fatality(s), damage to property or impact to environment.</p>
+                        <hr />
+                        <a href="/Home/Index" class="btn btn-primary" id="modulesBack">Back to Modules</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
